@@ -1,0 +1,20 @@
+services:
+  cadviewer:
+    build: .
+    image: cadviewer:latest
+    container_name: cadviewer
+    environment:
+      - DISPLAY=${DISPLAY}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+      - PULSE_SERVER=${PULSE_SERVER}
+      # If the window does not appear or rendering errors occur, uncomment the line below to force software rendering
+      - LIBGL_ALWAYS_SOFTWARE=1
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      # Map the local folder containing your CAD files <-> the container's /data directory
+      - ./examples:/data
+    # devices:
+    #   - /dev/dri:/dev/dri
+    ipc: host

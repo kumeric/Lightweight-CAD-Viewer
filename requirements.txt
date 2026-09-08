@@ -1,0 +1,9 @@
+PyQt5>=5.15,<5.16
+pyvista>=0.43
+pyvistaqt>=0.11
+numpy>=1.24
+vtk>=9.2
+
+# STEP (.step/.stp) Support - OCP bindings installed via pip (wheels available for Windows/Linux/macOS)
+# The version will automatically match the latest stable release compatible with your Python version (3.10~3.13)
+cadquery-ocp>=7.7

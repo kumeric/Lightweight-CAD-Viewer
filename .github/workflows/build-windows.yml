@@ -1,0 +1,40 @@
+name: Build Windows exe
+
+# Trigger on manual dispatch (Run workflow from the Actions tab) or when pushing tag versioning patterns (e.g., v1.0.0)
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build exe
+        run: pyinstaller --noconfirm --clean CADViewer.spec
+
+      - name: Stage release folder
+        shell: bash
+        run: |
+          mkdir -p release
+          cp dist/CADViewer.exe release/
+          cp windows/install.bat release/
+          cp windows/Create-Shortcut.ps1 release/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CADViewer-windows
+          path: release/
